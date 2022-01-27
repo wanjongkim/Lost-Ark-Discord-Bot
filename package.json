@@ -15,5 +15,12 @@
   "bugs": {
     "url": "https://github.com/wanjongkim/Lost-Ark-Discord-Bot/issues"
   },
-  "homepage": "https://github.com/wanjongkim/Lost-Ark-Discord-Bot#readme"
+  "homepage": "https://github.com/wanjongkim/Lost-Ark-Discord-Bot#readme",
+  "dependencies": {
+    "discord.js": "^13.6.0",
+    "dotenv": "^14.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
 }
