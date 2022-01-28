@@ -45,8 +45,8 @@ module.exports = {
         .setName('dailies')
         .setDescription('Replies with dailies'),
     async execute(interaction) {
-        await interaction.reply({ embeds: [una], files: [{ attachment: './assets/pictures/unas_task.png', description: "Southeast Tripod in Vern Castle" }] });
-        await interaction.followUp({ embeds: [guild], files: [{attachment: './assets/pictures/guild vendor.png', description: 'Inside the North church building in Vern Castle'}] });
-        await interaction.followUp({embeds: [misc], files: [{attachment: './assets/pictures/chaos.png'}] })
+        await interaction.reply({ embeds: [una], files: [{ attachment: './assets/pictures/unas_task.png', description: "Southeast Tripod in Vern Castle" }], ephemeral: true });
+        await interaction.followUp({ embeds: [guild], files: [{attachment: './assets/pictures/guild vendor.png', description: 'Inside the North church building in Vern Castle'}], ephemeral: true });
+        await interaction.followUp({embeds: [misc], files: [{attachment: './assets/pictures/chaos.png'}], ephemeral: true })
     },
 };
