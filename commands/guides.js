@@ -10,17 +10,15 @@ const linksEmbed = new MessageEmbed()
     .setTitle('[Guides]')
 
 const fetchInfo = async () => {
-
-    const response = await fetch(process.env.JSONBIN,
+    const response = await fetch(`https://api.jsonbin.io/v3/b/${process.env.JSONBIN}/latest`,
         {
             headers: {
-                "secret-key": process.env.MASTERKEY,
+                "X-MASTER-KEY": process.env.MASTERKEY,
             }
         });
     const data = await response.json();
-
     let counter = 0;
-    data.list.forEach(element => {
+    data.record.list.forEach(element => {
         linksList.list.push(new link(element._name, element._link));
         linksEmbed.addFields({ name: element._name, value: `[Link](${element._link})` });
         counter += 1;
@@ -28,58 +26,30 @@ const fetchInfo = async () => {
 }
 fetchInfo();
 
-const addGuide = (name, newLink) => {
-    linksList.list.push(new link(name, newLink));
-    linksEmbed.addFields({ name: name, value: `[Link](${newLink})` })
-}
-
-const removeGuide = (name) => {
-    let index = 0;
-    let guideFound = false;
-    linksList.list.forEach(element => {
-        if (element._name.toLowerCase() == name.toLowerCase()) {
-            guideFound = true;
-            return;
-        }
-        index++;
-    });
-    if (!guideFound) {
-        msg.channel.send(`The guide with the name: ${name} doesn't exist`)
-        return;
-    }
-    else {
-        linksList.list.splice(index - 1, 1);
-        console.log(linksList);
-    }
-}
-
 const putInfo = async () => {
-
-    const response = await fetch('https://api.jsonbin.io/v3/b/61eb160c6c4a232f9d86c858/',
-        {
-            method: "PUT",
-            body: JSON.stringify(linksList),
-            headers: {
-                "content-type": "application/json",
-                "x-master-key": masterKey,
-            }
-        });
-    console.log('Bot is ending');
-    process.exit(0);
+    try {
+        const response = await fetch(`https://api.jsonbin.io/v3/b/${process.env.JSONBIN}`,
+            {
+                method: "PUT",
+                body: JSON.stringify(linksList),
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Master-Key": process.env.MASTERKEY
+                }
+            });
+    } catch (err) {
+        console.log(err);
+    }
 }
-
 module.exports = {
-    putInfo,
+    putInfo: putInfo,
+    linksList: linksList,
+    linksEmbed: linksEmbed,
     data: new SlashCommandBuilder()
         .setName('guides')
         .setDescription('Replies with written guides')
-        .addSubcommand(subcommand =>
-            subcommand
-                .setName('name')
-                .setDescription('Name of the guide')
-        )
     ,
     async execute(interaction) {
         await interaction.reply({ embeds: [linksEmbed] });
-    },
-};
+    }
+}

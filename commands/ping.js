@@ -1,3 +1,5 @@
+//basic template for adding new commands
+
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 module.exports = {
